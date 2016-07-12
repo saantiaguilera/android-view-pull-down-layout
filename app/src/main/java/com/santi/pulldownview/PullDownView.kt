@@ -32,6 +32,12 @@ class PullDownView : FrameLayout, PullGesturesDetector.Callback {
         addView(content)
         addView(header)
 
+        content.afterMeasured {
+            if (content.layoutParams.height > this@PullDownView.layoutParams.height) {
+                header.afterMeasured { content.layoutParams.height = this@PullDownView.layoutParams.height - header.layoutParams.height }
+            }
+        }
+
         animator.setCallback(this)
     }
 
@@ -75,7 +81,7 @@ class PullDownView : FrameLayout, PullGesturesDetector.Callback {
         }
 
     }
-/* remove if unused
+
     inline fun <T: View> T.afterMeasured(crossinline stuff: T.() -> Unit) {
         viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -86,5 +92,5 @@ class PullDownView : FrameLayout, PullGesturesDetector.Callback {
             }
         })
     }
-*/
+
 }
