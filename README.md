@@ -1,2 +1,3 @@
-# android-view-pull-down-layout
-Local notification with pull down for content
+# Pull Down View. WIP
+
+Not finished yet
