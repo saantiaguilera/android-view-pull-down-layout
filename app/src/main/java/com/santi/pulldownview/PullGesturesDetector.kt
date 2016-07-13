@@ -59,7 +59,7 @@ internal class PullGesturesDetector(private val view: PullDownView) {
         var moved = false
         var y = 0
 
-        override fun onTouch(p0: View?, motionEvent: MotionEvent?): Boolean {
+        override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
             if (motionEvent == null)
                 return false
 
@@ -78,7 +78,7 @@ internal class PullGesturesDetector(private val view: PullDownView) {
                 }
 
                 MotionEvent.ACTION_UP -> {
-                    if (!moved)
+                    if (!moved && view == this@PullGesturesDetector.view.header)
                         onShowPress()
                     else end(y.toFloat())
                     return true
