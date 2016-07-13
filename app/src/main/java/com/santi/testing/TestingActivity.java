@@ -24,7 +24,7 @@ public class TestingActivity extends Activity {
 
         View blackView2 = new View(this);
         blackView2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        blackView2.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 500));
+        blackView2.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 6600));
         blackView2.setTag(2);
 
         new PullDownView.Builder(this)

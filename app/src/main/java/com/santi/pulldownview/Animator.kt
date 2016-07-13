@@ -19,13 +19,13 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
         PullGesturesDetector(view).setCallback(this)
     }
 
-    override fun showContent() = with(ObjectAnimator.ofInt(this, "translationY", view.header.height)) {
+    override fun showContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, view.header.height.toFloat())) {
         userInteracted = true
         duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         start()
     }
 
-    override fun hideContent() = with(ObjectAnimator.ofInt(this, "translationY", view.header.height.abs() - view.content.height.abs())) {
+    override fun hideContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, (view.header.height.abs() - view.content.height.abs()).toFloat())) {
         userInteracted = true
         duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         start()
