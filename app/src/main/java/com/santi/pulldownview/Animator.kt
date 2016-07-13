@@ -28,7 +28,7 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
     override fun showContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, view.header.height.toFloat())) {
         userInteracted = true
         contentShownOnce = true
-        duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        duration = view.activity.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         start()
 
         notifyContentShown()
@@ -36,7 +36,7 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
 
     override fun hideContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, (view.header.height.abs() - view.content.height.abs()).toFloat())) {
         userInteracted = true
-        duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        duration = view.activity.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         addListener(object: android.animation.Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: android.animation.Animator?) { }
             override fun onAnimationCancel(p0: android.animation.Animator?) { }
@@ -61,11 +61,11 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
 
     private fun showHeader() {
         view.header.visibility = View.VISIBLE
-        view.startAnimation(AnimationUtils.loadAnimation(view.context, R.anim.slide_in_bottom))
+        view.container.startAnimation(AnimationUtils.loadAnimation(view.activity, R.anim.slide_in_bottom))
     }
 
     fun hideHeader() {
-        val animation = AnimationUtils.loadAnimation(view.context, R.anim.slide_out_top)
+        val animation = AnimationUtils.loadAnimation(view.activity, R.anim.slide_out_top)
         animation.setAnimationListener(object: Animation.AnimationListener {
             override fun onAnimationRepeat(p0: Animation?) {
             }
@@ -80,14 +80,14 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
 
         })
 
-        view.startAnimation(animation)
+        view.container.startAnimation(animation)
     }
 
     override fun start(time: Long) {
         showHeader()
 
         if (time > 0) {
-            view.postDelayed({
+            view.container.postDelayed({
                 if (!userInteracted)
                     hideHeader()
             }, time)

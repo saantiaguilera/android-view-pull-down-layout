@@ -1,8 +1,6 @@
 package com.santi.pulldownview
 
 import android.app.Activity
-import android.content.Context
-import android.util.AttributeSet
 import android.view.*
 import android.widget.FrameLayout
 import java.lang.ref.WeakReference
@@ -11,12 +9,13 @@ import java.lang.ref.WeakReference
  *
  * Created by santi on 12/07/16.
  */
-class PullDownView : FrameLayout {
+class PullDownView(val activity: Activity) {
 
     private val DEFAULT_TIME_SHOWING = 0L
 
     val TIME_NO_EXPIRE = -1
 
+    internal val container = FrameLayout(activity)
     internal lateinit var header: View
     internal lateinit var content: View
 
@@ -36,24 +35,20 @@ class PullDownView : FrameLayout {
 
     private var listener: WeakReference<Callback>? = null
 
-    private constructor(context: Context) : this(context, null) {}
-
-    private constructor(context: Context, attributes: AttributeSet?) : this(context, attributes, 0) {}
-
-    private constructor(context: Context, attributes: AttributeSet?, defStyleAttr: Int) : super(context, attributes, defStyleAttr) {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+    init {
+        container.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
     }
 
     internal fun build() {
-        addView(content)
-        addView(header)
+        container.addView(content)
+        container.addView(header)
 
         fun modifyContentHeight() {
-            content.layoutParams.height = this@PullDownView.height - header.layoutParams.height
+            content.layoutParams.height = this@PullDownView.container.height - header.layoutParams.height
         }
 
         fun modifyContents() {
-            if (content.layoutParams.height > this@PullDownView.height) {
+            if (content.layoutParams.height > this@PullDownView.container.height) {
                 modifyContentHeight()
             }
 
@@ -61,7 +56,7 @@ class PullDownView : FrameLayout {
         }
 
         if (content.layoutParams.height <= 0 || content.layoutParams.width <= 0) {
-            afterMeasured {
+            container.afterMeasured {
                 modifyContents()
             }
         } else modifyContents()
@@ -76,8 +71,8 @@ class PullDownView : FrameLayout {
     }
 
     fun showHeader(time: Long = DEFAULT_TIME_SHOWING) {
-        val viewGroup = (context as Activity).findViewById(android.R.id.content) as ViewGroup
-        viewGroup.addView(this)
+        val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
+        viewGroup.addView(container)
 
         animator.start(time)
     }
