@@ -13,6 +13,7 @@ import android.widget.FrameLayout
 class PullDownView : FrameLayout {
 
     private val DEFAULT_TIME_SHOWING = 4000L
+    val TIME_NO_EXPIRE = -1
 
     internal lateinit var header: View
     internal lateinit var content: View

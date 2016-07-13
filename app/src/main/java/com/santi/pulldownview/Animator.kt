@@ -50,10 +50,12 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
     override fun start(time: Long) {
         showHeader()
 
-        view.postDelayed({
-            if (!userInteracted)
-                hideHeader()
-        }, time)
+        if (time > 0) {
+            view.postDelayed({
+                if (!userInteracted)
+                    hideHeader()
+            }, time)
+        }
     }
 
 }
