@@ -31,7 +31,7 @@ public class TestingActivity extends Activity {
 
         View contentView = new View(this);
         contentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        contentView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 6600));
+        contentView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

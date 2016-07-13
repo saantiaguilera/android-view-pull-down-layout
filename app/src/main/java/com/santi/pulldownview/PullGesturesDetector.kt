@@ -5,7 +5,7 @@ import android.view.View
 import java.lang.ref.WeakReference
 
 /**
- * Google you did it again ! This shit doesnt work ! GestureDetector.OnGestureListener
+ * Google you did it again ! This shit doesnt work ! <=GestureDetector.OnGestureListener
  * Created by santi on 12/07/16.
  */
 internal class PullGesturesDetector(private val view: PullDownView) {
@@ -22,13 +22,12 @@ internal class PullGesturesDetector(private val view: PullDownView) {
     fun setCallback(listener: Callback) {
         callback = WeakReference(listener)
 
-        //Use view.header for someones and content for others
         view.content.setOnTouchListener(touchInstance)
         view.header.setOnTouchListener(touchInstance)
     }
 
     private fun end() {
-        if (view.content.y + view.content.height > view.height / 2.5) {
+        if (view.content.y + view.content.height > (view.header.height + view.content.height) / 2) {
             callback.get()?.showContent()
             state = STATE.SHOWN
         } else {
