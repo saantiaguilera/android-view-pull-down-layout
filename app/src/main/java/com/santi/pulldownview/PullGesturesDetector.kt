@@ -24,39 +24,8 @@ internal class PullGesturesDetector(private val view: PullDownView) {
         callback = WeakReference(listener)
 
         //Use view.header for someones and content for others
-        view.setOnTouchListener (object: View.OnTouchListener {
-            var moved = false
-            var y = 0
-
-            override fun onTouch(p0: View?, motionEvent: MotionEvent?): Boolean {
-                if (motionEvent == null)
-                    return false
-
-                when (motionEvent.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        moved = false
-                        y = motionEvent.y.toInt()
-                        return true
-                    }
-
-                    MotionEvent.ACTION_MOVE -> {
-                        moved = true
-                        onScroll(motionEvent.y - y)
-                        y = motionEvent.y.toInt()
-                        return true
-                    }
-
-                    MotionEvent.ACTION_UP -> {
-                        if (!moved)
-                            onShowPress()
-                        else end(y.toFloat())
-                        return true
-                    }
-
-                    else -> return false
-                }
-            }
-        })
+        view.content.setOnTouchListener(touchInstance)
+        view.header.setOnTouchListener(touchInstance)
     }
 
     private fun end(y: Float) {
@@ -84,6 +53,40 @@ internal class PullGesturesDetector(private val view: PullDownView) {
             }
         }
 
+    }
+
+    val touchInstance = object: View.OnTouchListener {
+        var moved = false
+        var y = 0
+
+        override fun onTouch(p0: View?, motionEvent: MotionEvent?): Boolean {
+            if (motionEvent == null)
+                return false
+
+            when (motionEvent.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    moved = false
+                    y = motionEvent.y.toInt()
+                    return true
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    moved = true
+                    onScroll(motionEvent.y - y)
+                    y = motionEvent.y.toInt()
+                    return true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    if (!moved)
+                        onShowPress()
+                    else end(y.toFloat())
+                    return true
+                }
+
+                else -> return false
+            }
+        }
     }
 
     interface Callback {
