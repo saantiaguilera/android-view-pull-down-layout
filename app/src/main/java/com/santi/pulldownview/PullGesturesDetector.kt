@@ -78,9 +78,12 @@ internal class PullGesturesDetector(private val view: PullDownView) {
                 }
 
                 MotionEvent.ACTION_UP -> {
-                    if (!moved && view == this@PullGesturesDetector.view.header)
-                        onShowPress()
-                    else end(y.toFloat())
+                    if (!moved) {
+                        when (view) {
+                            this@PullGesturesDetector.view.header -> if (!this@PullGesturesDetector.view.header.performClick()) onShowPress()
+                            this@PullGesturesDetector.view.content -> this@PullGesturesDetector.view.content.performClick()
+                        }
+                    } else end(motionEvent.y)
                     return true
                 }
 

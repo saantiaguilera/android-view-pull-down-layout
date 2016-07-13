@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.santi.pulldownview.PullDownView;
 import com.santi.pulldownview.R;
@@ -17,19 +18,31 @@ public class TestingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_testing);
 
-        View blackView = new View(this);
-        blackView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        blackView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150));
-        blackView.setTag(1);
+        View headerView = new View(this);
+        headerView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        headerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150));
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(TestingActivity.this, "Header was clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        headerView.setTag(1);
 
-        View blackView2 = new View(this);
-        blackView2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        blackView2.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 6600));
-        blackView2.setTag(2);
+        View contentView = new View(this);
+        contentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        contentView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 6600));
+        contentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(TestingActivity.this, "Content was clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        contentView.setTag(2);
 
         new PullDownView.Builder(this)
-                .content(blackView2)
-                .header(blackView)
+                .content(contentView)
+                .header(headerView)
                 .build().show(6000);
     }
 
