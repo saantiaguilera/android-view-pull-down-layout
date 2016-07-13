@@ -33,12 +33,12 @@ internal class PullGesturesDetector(context: Context) : GestureDetector.OnGestur
         when (state) {
             STATE.EMPTY, STATE.UNDEFINED -> {
                 state = STATE.FULL
-                callback.get()?.onFullscreen()
+                callback.get()?.showContent()
             }
 
             STATE.FULL -> {
                 state = STATE.EMPTY
-                callback.get()?.onEmpty()
+                callback.get()?.hideContent()
             }
         }
 
@@ -50,11 +50,11 @@ internal class PullGesturesDetector(context: Context) : GestureDetector.OnGestur
     override fun onFling(p0: MotionEvent?, p1: MotionEvent?, p2: Float, velY: Float): Boolean {
         when {
             velY > 0 -> {
-                callback.get()?.onFullscreen()
+                callback.get()?.showContent()
                 state = STATE.FULL
             }
             velY < 0 -> {
-                callback.get()?.onEmpty()
+                callback.get()?.hideContent()
                 state = STATE.EMPTY
             }
         }
@@ -72,8 +72,8 @@ internal class PullGesturesDetector(context: Context) : GestureDetector.OnGestur
 
     interface Callback {
         fun onScroll(position: Float)
-        fun onFullscreen()
-        fun onEmpty()
+        fun showContent()
+        fun hideContent()
     }
 
 }

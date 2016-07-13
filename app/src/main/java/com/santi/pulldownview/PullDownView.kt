@@ -2,7 +2,6 @@ package com.santi.pulldownview
 
 import android.app.Activity
 import android.content.Context
-import android.support.v4.view.GestureDetectorCompat
 import android.util.AttributeSet
 import android.view.*
 import android.widget.FrameLayout
@@ -11,7 +10,7 @@ import android.widget.FrameLayout
  *
  * Created by santi on 12/07/16.
  */
-class PullDownView : FrameLayout, PullGesturesDetector.Callback {
+class PullDownView : FrameLayout {
 
     private val DEFAULT_TIME_SHOWING = 4000L
 
@@ -46,15 +45,6 @@ class PullDownView : FrameLayout, PullGesturesDetector.Callback {
         viewGroup.addView(this)
 
         animator.start(time)
-    }
-
-    override fun onScroll(position: Float) {
-    }
-
-    override fun onFullscreen() {
-    }
-
-    override fun onEmpty() {
     }
 
     class Builder(activity: Activity) {

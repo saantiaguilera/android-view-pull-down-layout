@@ -15,10 +15,10 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
         PullGesturesDetector(view.context).setCallback(this)
     }
 
-    override fun onFullscreen() {
+    override fun showContent() {
     }
 
-    override fun onEmpty() {
+    override fun hideContent() {
     }
 
     override fun onScroll(position: Float) {
