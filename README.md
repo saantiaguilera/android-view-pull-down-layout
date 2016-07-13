@@ -14,4 +14,6 @@ new PullDownView.Builder(activityReference)
 //If you hold the instance you can also do manually
 mPullDownView.showContent();
 mPullDownView.hideContent();
+mPullDownView.hideHeader();
+mPullDownView.showHeader(); //Same as the one with the time, when time is 0
 ```
