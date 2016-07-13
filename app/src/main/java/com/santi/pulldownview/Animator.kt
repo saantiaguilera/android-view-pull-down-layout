@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils
 internal class Animator(private val view: PullDownView) : PullGesturesDetector.Callback, PullDownView.Animations {
 
     private var userInteracted = false
+    private var contentShownOnce = false
 
     init {
         PullGesturesDetector(view).setCallback(this)
@@ -19,6 +20,7 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
 
     override fun showContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, view.header.height.toFloat())) {
         userInteracted = true
+        contentShownOnce = true
         duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         start()
     }
@@ -31,7 +33,8 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
             override fun onAnimationCancel(p0: android.animation.Animator?) { }
             override fun onAnimationStart(p0: android.animation.Animator?) { }
             override fun onAnimationEnd(p0: android.animation.Animator?) {
-                hideHeader()
+                if (contentShownOnce)
+                    hideHeader()
             }
         })
         start()
