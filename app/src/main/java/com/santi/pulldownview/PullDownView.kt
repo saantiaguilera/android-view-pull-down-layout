@@ -41,6 +41,14 @@ class PullDownView : FrameLayout {
         }
     }
 
+    fun showContent() {
+        animator.showContent()
+    }
+
+    fun hideContent() {
+        animator.hideContent()
+    }
+
     fun show(time: Long = DEFAULT_TIME_SHOWING) {
         val viewGroup = (context as Activity).findViewById(android.R.id.content) as ViewGroup
         viewGroup.addView(this)
