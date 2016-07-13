@@ -3,6 +3,7 @@ package com.santi.testing;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -31,7 +32,7 @@ public class TestingActivity extends Activity {
 
         View contentView = new View(this);
         contentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        contentView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
+        contentView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 600));
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,6 +44,17 @@ public class TestingActivity extends Activity {
         new PullDownView.Builder(this)
                 .content(contentView)
                 .header(headerView)
+                .listener(new PullDownView.Callback() {
+                    @Override
+                    public void onContentShown() {
+                        Log.w(this.getClass().getName(), "onContentShown");
+                    }
+
+                    @Override
+                    public void onContentHidden() {
+                        Log.w(this.getClass().getName(), "onContentHidden");
+                    }
+                })
                 .build().show(6000);
     }
 

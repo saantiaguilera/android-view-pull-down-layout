@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.*
 import android.widget.FrameLayout
+import java.lang.ref.WeakReference
 
 /**
  *
@@ -13,12 +14,27 @@ import android.widget.FrameLayout
 class PullDownView : FrameLayout {
 
     private val DEFAULT_TIME_SHOWING = 4000L
+
     val TIME_NO_EXPIRE = -1
 
     internal lateinit var header: View
     internal lateinit var content: View
 
-    private val animator by lazy { Animator(this) }
+    private val animator by lazy {
+        var anim = Animator(this)
+        anim.setCallback(object: Animator.Callback {
+            override fun onContentHidden() {
+                listener?.get()?.onContentHidden()
+            }
+
+            override fun onContentShown() {
+                listener?.get()?.onContentShown()
+            }
+        })
+        anim
+    }
+
+    private var listener: WeakReference<Callback>? = null
 
     private constructor(context: Context) : this(context, null) {}
 
@@ -72,6 +88,7 @@ class PullDownView : FrameLayout {
 
         private var header: View? = null
         private var content: View? = null
+        private var listener: Callback? = null
 
         fun header(view: View): Builder {
             header = view
@@ -83,14 +100,28 @@ class PullDownView : FrameLayout {
             return this
         }
 
+        fun listener(callback: Callback): Builder {
+            listener = callback
+            return this
+        }
+
         fun build(): PullDownView {
             return PullDownView(context).apply {
                 header = this@Builder.header?: View(context)
                 content = this@Builder.content?: View(context)
+
+                if (this@Builder.listener != null)
+                    listener = WeakReference(this@Builder.listener!!)
+
                 build()
             }
         }
 
+    }
+
+    interface Callback {
+        fun onContentShown()
+        fun onContentHidden()
     }
 
     interface Animations {
