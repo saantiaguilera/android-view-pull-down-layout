@@ -64,7 +64,7 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
         view.startAnimation(AnimationUtils.loadAnimation(view.context, R.anim.slide_in_bottom))
     }
 
-    private fun hideHeader() {
+    fun hideHeader() {
         val animation = AnimationUtils.loadAnimation(view.context, R.anim.slide_out_top)
         animation.setAnimationListener(object: Animation.AnimationListener {
             override fun onAnimationRepeat(p0: Animation?) {

@@ -13,7 +13,7 @@ import java.lang.ref.WeakReference
  */
 class PullDownView : FrameLayout {
 
-    private val DEFAULT_TIME_SHOWING = 4000L
+    private val DEFAULT_TIME_SHOWING = 0L
 
     val TIME_NO_EXPIRE = -1
 
@@ -75,11 +75,15 @@ class PullDownView : FrameLayout {
         animator.hideContent()
     }
 
-    fun show(time: Long = DEFAULT_TIME_SHOWING) {
+    fun showHeader(time: Long = DEFAULT_TIME_SHOWING) {
         val viewGroup = (context as Activity).findViewById(android.R.id.content) as ViewGroup
         viewGroup.addView(this)
 
         animator.start(time)
+    }
+
+    fun hideHeader() {
+        animator.hideHeader()
     }
 
     class Builder(activity: Activity) {

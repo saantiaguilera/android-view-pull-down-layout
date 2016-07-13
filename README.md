@@ -9,7 +9,7 @@ new PullDownView.Builder(activityReference)
 		.header(aViewThatWillBeShownAsHeader)
 		.content(aViewThatWillBeShownAsContent)
 		.listener(toReceiveCallbacksFromImportantEvents)
-		.build().show(theTimeThatWillBeShown);
+		.build().showHeader(theTimeThatWillBeShown);
 
 //If you hold the instance you can also do manually
 mPullDownView.showContent();

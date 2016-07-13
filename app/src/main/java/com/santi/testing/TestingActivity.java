@@ -1,7 +1,6 @@
 package com.santi.testing;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +54,7 @@ public class TestingActivity extends Activity {
                         Log.w(this.getClass().getName(), "onContentHidden");
                     }
                 })
-                .build().show(6000);
+                .build().showHeader(6000);
     }
 
     @Override
