@@ -19,7 +19,7 @@ public class TestingActivity extends Activity {
 
         View blackView = new View(this);
         blackView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        blackView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 50));
+        blackView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150));
         blackView.setTag(1);
 
         View blackView2 = new View(this);

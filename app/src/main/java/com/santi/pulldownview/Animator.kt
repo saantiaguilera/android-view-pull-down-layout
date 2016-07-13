@@ -1,40 +1,59 @@
 package com.santi.pulldownview
 
-import android.content.Context
-import java.lang.ref.WeakReference
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 
 /**
  * Created by santi on 12/07/16.
  */
-internal class Animator(context: Context) : PullGesturesDetector.Callback {
+internal class Animator(private val view: PullDownView) : PullGesturesDetector.Callback, PullDownView.Animations {
+
+    private var userInteracted = false
 
     init {
-        PullGesturesDetector(context).setCallback(this)
-    }
-
-    private lateinit var callback: WeakReference<PullGesturesDetector.Callback?>
-
-    fun setCallback(listener: PullGesturesDetector.Callback) {
-        callback = WeakReference(listener)
+        PullGesturesDetector(view.context).setCallback(this)
     }
 
     override fun onFullscreen() {
-        callback.get()?.onFullscreen()
     }
 
     override fun onEmpty() {
-        callback.get()?.onEmpty()
     }
 
     override fun onScroll(position: Float) {
-        callback.get()?.onScroll(position)
     }
 
-    //The callback hell is real!
-    interface Callback {
-        fun onFullscreen()
-        fun onEmpty()
-        fun onScroll(position: Float)
+    private fun showHeader() {
+        view.header.visibility = View.VISIBLE
+        view.startAnimation(AnimationUtils.loadAnimation(view.context, R.anim.slide_in_bottom))
+    }
+
+    private fun hideHeader() {
+        val animation = AnimationUtils.loadAnimation(view.context, R.anim.slide_out_top)
+        animation.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                view.header.visibility = View.INVISIBLE
+            }
+
+            override fun onAnimationStart(p0: Animation?) {
+            }
+
+        })
+
+        view.startAnimation(animation)
+    }
+
+    override fun start(time: Long) {
+        showHeader()
+
+        view.postDelayed({
+            if (!userInteracted)
+                hideHeader()
+        }, time)
     }
 
 }

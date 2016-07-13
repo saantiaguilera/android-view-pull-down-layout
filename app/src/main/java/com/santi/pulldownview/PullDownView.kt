@@ -18,7 +18,7 @@ class PullDownView : FrameLayout, PullGesturesDetector.Callback {
     internal lateinit var header: View
     internal lateinit var content: View
 
-    private val animator by lazy { Animator(context) }
+    private val animator by lazy { Animator(this) }
 
     private constructor(context: Context) : this(context, null) {}
 
@@ -32,18 +32,20 @@ class PullDownView : FrameLayout, PullGesturesDetector.Callback {
         addView(content)
         addView(header)
 
+        content.visibility = GONE //until i do it
+
         content.afterMeasured {
             if (content.layoutParams.height > this@PullDownView.layoutParams.height) {
                 header.afterMeasured { content.layoutParams.height = this@PullDownView.layoutParams.height - header.layoutParams.height }
             }
         }
-
-        animator.setCallback(this)
     }
 
     fun show(time: Long = DEFAULT_TIME_SHOWING) {
         val viewGroup = (context as Activity).findViewById(android.R.id.content) as ViewGroup
         viewGroup.addView(this)
+
+        animator.start(time)
     }
 
     override fun onScroll(position: Float) {
@@ -80,6 +82,10 @@ class PullDownView : FrameLayout, PullGesturesDetector.Callback {
             }
         }
 
+    }
+
+    interface Animations {
+        fun start(time: Long)
     }
 
     inline fun <T: View> T.afterMeasured(crossinline stuff: T.() -> Unit) {
