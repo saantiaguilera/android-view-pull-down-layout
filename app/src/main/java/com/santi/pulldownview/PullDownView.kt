@@ -32,15 +32,23 @@ class PullDownView : FrameLayout {
         addView(content)
         addView(header)
 
-        content.afterMeasured {
-            if (content.layoutParams.height > this@PullDownView.layoutParams.height) {
-                header.afterMeasured {
-                    content.layoutParams.height = this@PullDownView.layoutParams.height - header.layoutParams.height
-                }
+        fun modifyContentHeight() {
+            content.layoutParams.height = this@PullDownView.height - header.layoutParams.height
+        }
+
+        fun modifyContents() {
+            if (content.layoutParams.height > this@PullDownView.height) {
+                modifyContentHeight()
             }
 
             content.y = (header.layoutParams.height - content.layoutParams.height).toFloat()
         }
+
+        if (content.layoutParams.height <= 0 || content.layoutParams.width <= 0) {
+            afterMeasured {
+                modifyContents()
+            }
+        } else modifyContents()
     }
 
     fun showContent() {

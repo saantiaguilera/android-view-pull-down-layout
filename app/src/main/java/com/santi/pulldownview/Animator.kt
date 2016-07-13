@@ -1,9 +1,7 @@
 package com.santi.pulldownview
 
-import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.view.View
-import android.view.ViewPropertyAnimator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 
@@ -28,6 +26,14 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
     override fun hideContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, (view.header.height.abs() - view.content.height.abs()).toFloat())) {
         userInteracted = true
         duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        addListener(object: android.animation.Animator.AnimatorListener {
+            override fun onAnimationRepeat(p0: android.animation.Animator?) { }
+            override fun onAnimationCancel(p0: android.animation.Animator?) { }
+            override fun onAnimationStart(p0: android.animation.Animator?) { }
+            override fun onAnimationEnd(p0: android.animation.Animator?) {
+                hideHeader()
+            }
+        })
         start()
     }
 

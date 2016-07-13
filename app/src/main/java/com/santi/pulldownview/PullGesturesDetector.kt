@@ -1,9 +1,5 @@
 package com.santi.pulldownview
 
-import android.content.Context
-import android.graphics.Point
-import android.support.v4.view.GestureDetectorCompat
-import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import java.lang.ref.WeakReference
