@@ -11,12 +11,11 @@ import java.lang.ref.WeakReference
 internal class PullGesturesDetector(private val view: PullDownView) {
 
     private enum class STATE {
-        UNDEFINED,
-        FULL,
-        EMPTY
+        SHOWN,
+        HIDDEN
     }
 
-    private var state: STATE = STATE.UNDEFINED
+    private lateinit var state: STATE
 
     private lateinit var callback: WeakReference<Callback?>
 
@@ -28,27 +27,30 @@ internal class PullGesturesDetector(private val view: PullDownView) {
         view.header.setOnTouchListener(touchInstance)
     }
 
-    private fun end(y: Float) {
-        if (y > view.content.height / 2.5)
+    private fun end() {
+        if (view.content.y + view.content.height > view.height / 2.5) {
             callback.get()?.showContent()
-        else callback.get()?.hideContent()
+            state = STATE.SHOWN
+        } else {
+            callback.get()?.hideContent()
+            state = STATE.HIDDEN
+        }
     }
 
     private fun onScroll(p: Float): Boolean {
         callback.get()?.onScroll(p)
-        state = STATE.UNDEFINED
         return true
     }
 
     private fun onShowPress() {
         when (state) {
-            STATE.EMPTY, STATE.UNDEFINED -> {
-                state = STATE.FULL
+            STATE.HIDDEN -> {
+                state = STATE.SHOWN
                 callback.get()?.showContent()
             }
 
-            STATE.FULL -> {
-                state = STATE.EMPTY
+            STATE.SHOWN -> {
+                state = STATE.HIDDEN
                 callback.get()?.hideContent()
             }
         }
@@ -66,14 +68,14 @@ internal class PullGesturesDetector(private val view: PullDownView) {
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     moved = false
-                    y = motionEvent.y.toInt()
+                    y = motionEvent.rawY.toInt()
                     return true
                 }
 
                 MotionEvent.ACTION_MOVE -> {
                     moved = true
-                    onScroll(motionEvent.y - y)
-                    y = motionEvent.y.toInt()
+                    onScroll(motionEvent.rawY - y)
+                    y = motionEvent.rawY.toInt()
                     return true
                 }
 
@@ -83,7 +85,7 @@ internal class PullGesturesDetector(private val view: PullDownView) {
                             this@PullGesturesDetector.view.header -> if (!this@PullGesturesDetector.view.header.performClick()) onShowPress()
                             this@PullGesturesDetector.view.content -> this@PullGesturesDetector.view.content.performClick()
                         }
-                    } else end(motionEvent.y)
+                    } else end()
                     return true
                 }
 
