@@ -25,19 +25,21 @@ class PullDownView : FrameLayout {
     private constructor(context: Context, attributes: AttributeSet?) : this(context, attributes, 0) {}
 
     private constructor(context: Context, attributes: AttributeSet?, defStyleAttr: Int) : super(context, attributes, defStyleAttr) {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
 
     internal fun build() {
         addView(content)
         addView(header)
 
-        content.visibility = GONE //until i do it
-
         content.afterMeasured {
             if (content.layoutParams.height > this@PullDownView.layoutParams.height) {
-                header.afterMeasured { content.layoutParams.height = this@PullDownView.layoutParams.height - header.layoutParams.height }
+                header.afterMeasured {
+                    content.layoutParams.height = this@PullDownView.layoutParams.height - header.layoutParams.height
+                }
             }
+
+            content.y = (header.layoutParams.height - content.layoutParams.height).toFloat()
         }
     }
 

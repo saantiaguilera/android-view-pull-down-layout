@@ -1,10 +1,14 @@
 package com.santi.pulldownview
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.view.View
+import android.view.ViewPropertyAnimator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 
 /**
+ *
  * Created by santi on 12/07/16.
  */
 internal class Animator(private val view: PullDownView) : PullGesturesDetector.Callback, PullDownView.Animations {
@@ -12,16 +16,24 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
     private var userInteracted = false
 
     init {
-        PullGesturesDetector(view.context).setCallback(this)
+        PullGesturesDetector(view).setCallback(this)
     }
 
-    override fun showContent() {
+    override fun showContent() = with(ObjectAnimator.ofInt(this, "translationY", view.header.height)) {
+        userInteracted = true
+        duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        start()
     }
 
-    override fun hideContent() {
+    override fun hideContent() = with(ObjectAnimator.ofInt(this, "translationY", view.header.height.abs() - view.content.height.abs())) {
+        userInteracted = true
+        duration = view.context.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        start()
     }
 
-    override fun onScroll(position: Float) {
+    override fun onScroll(offset: Float) {
+        userInteracted = true
+        view.content.y += offset
     }
 
     private fun showHeader() {
@@ -57,5 +69,7 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
             }, time)
         }
     }
+
+    fun Int.abs(): Int = if (this < 0) -this else this
 
 }
