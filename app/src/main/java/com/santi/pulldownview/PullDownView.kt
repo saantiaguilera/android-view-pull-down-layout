@@ -106,8 +106,12 @@ class PullDownView(val activity: Activity) {
 
         fun build(): PullDownView {
             return PullDownView(context).apply {
-                header = this@Builder.header?: View(context)
-                content = this@Builder.content?: View(context)
+                val invisibleHeader = View(context)
+                val invisibleContent = View(context)
+                invisibleHeader.visibility = View.GONE
+                invisibleContent.visibility = View.GONE
+                header = this@Builder.header?: invisibleHeader
+                content = this@Builder.content?: invisibleContent
 
                 if (this@Builder.listener != null)
                     listener = WeakReference(this@Builder.listener!!)

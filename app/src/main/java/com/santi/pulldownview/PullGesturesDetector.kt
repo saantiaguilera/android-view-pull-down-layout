@@ -22,17 +22,21 @@ internal class PullGesturesDetector(private val view: PullDownView) {
     fun setCallback(listener: Callback) {
         callback = WeakReference(listener)
 
-        view.content.setOnTouchListener(touchInstance)
+        if (view.content.visibility == View.VISIBLE)
+            view.content.setOnTouchListener(touchInstance)
+
         view.header.setOnTouchListener(touchInstance)
     }
 
     private fun end() {
-        if (view.content.y + view.content.height > (view.header.height + view.content.height) / 2) {
-            callback.get()?.showContent()
-            state = STATE.SHOWN
-        } else {
-            callback.get()?.hideContent()
-            state = STATE.HIDDEN
+        if (view.content.visibility == View.VISIBLE) {
+            if (view.content.y + view.content.height > (view.header.height + view.content.height) / 2) {
+                callback.get()?.showContent()
+                state = STATE.SHOWN
+            } else {
+                callback.get()?.hideContent()
+                state = STATE.HIDDEN
+            }
         }
     }
 

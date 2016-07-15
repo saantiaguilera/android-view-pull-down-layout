@@ -41,7 +41,7 @@ public class TestingActivity extends Activity {
         contentView.setTag(2);
 
         new PullDownView.Builder(this)
-                .content(contentView)
+                //.content(contentView)
                 .header(headerView)
                 .listener(new PullDownView.Callback() {
                     @Override

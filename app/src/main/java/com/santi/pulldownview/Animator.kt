@@ -54,9 +54,20 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
     override fun onScroll(offset: Float) {
         userInteracted = true
 
-        if (view.content.y + offset <= view.header.height)
-            view.content.y += offset
-        else view.content.y = view.header.height.toFloat()
+        when {
+            !contentShownOnce && (view.content.y + view.content.height <= view.header.height &&
+                                    offset < 0) -> {
+                view.header.y += offset
+                view.content.y += offset
+
+                if (view.header.y <= view.header.height / 2)
+                    hideHeader()
+            }
+
+            view.content.y + offset <= view.header.height -> view.content.y += offset
+
+            else -> view.content.y = view.header.height.toFloat()
+        }
     }
 
     private fun showHeader() {
