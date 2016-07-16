@@ -13,6 +13,9 @@ import com.santi.pulldownview.R;
 import com.santi.pulldownview.contracts.ContentCallback;
 import com.santi.pulldownview.contracts.ViewCallback;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+
 public class TestingActivity extends Activity {
 
     @Override
@@ -33,7 +36,7 @@ public class TestingActivity extends Activity {
 
         View contentView = new View(this);
         contentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        contentView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 600));
+        contentView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +46,7 @@ public class TestingActivity extends Activity {
         contentView.setTag(2);
 
         new PullDownView.Builder(this)
-                //.content(contentView)
+                .content(contentView)
                 .header(headerView)
                 .onViewVisibilityChanged(new ViewCallback() {
                     @Override
@@ -70,4 +73,5 @@ public class TestingActivity extends Activity {
         super.onResume();
 
     }
+
 }

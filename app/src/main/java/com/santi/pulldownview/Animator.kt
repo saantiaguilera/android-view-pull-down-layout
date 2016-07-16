@@ -54,16 +54,16 @@ internal class Animator(private val view: PullDownView) : GestureResponses, Comm
         notifyContentHidden()
     }
 
-    override fun onScroll(offset: Float) {
+    override fun onScroll(position: Float) {
         userInteracted = true
 
         when {
             !contentShownOnce && (view.content.y + view.content.height <= view.header.height &&
-                                    offset < 0) -> {
+                                    position < 0) -> {
                 hideHeader()
             }
 
-            view.content.y + offset <= view.header.height -> view.content.y += offset
+            view.content.y + position <= view.header.height -> view.content.y += position
 
             else -> view.content.y = view.header.height.toFloat()
         }

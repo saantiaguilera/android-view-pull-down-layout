@@ -55,7 +55,8 @@ class PullDownView(internal val activity: Activity) {
         }
 
         fun modifyContents() {
-            if (content.layoutParams.height > this@PullDownView.container.height) {
+            if (content.layoutParams.height > this@PullDownView.container.height ||
+                    content.layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                 modifyContentHeight()
             }
 

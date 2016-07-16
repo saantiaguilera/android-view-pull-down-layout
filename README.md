@@ -2,7 +2,7 @@
 
 Not finished yet
 
-Usage. Somewhere around your app. Having a reference of an activity (I will change this but lets start from scratch)
+Usage. Somewhere around your app. Having a reference of an activity (Else we dont have where to inject this notification)
 
 ```Java
 new PullDownView.Builder(activityReference)
