@@ -32,7 +32,7 @@ internal class PullGesturesDetector(private val view: PullDownView) {
 
     private fun end() {
         if (view.content.visibility == View.VISIBLE) {
-            if (view.content.y + view.content.height > (view.header.height + view.content.height) / 2) {
+            if (view.content.y + view.content.height > (view.container.height / 2) + view.header.height) {
                 callback.get()?.showContent()
                 state = STATE.SHOWN
             } else {
