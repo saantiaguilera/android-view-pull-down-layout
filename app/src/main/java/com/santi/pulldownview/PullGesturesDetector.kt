@@ -38,7 +38,7 @@ internal class PullGesturesDetector(private val view: PullDownView) {
                 callback.get()?.hideContent()
                 state = STATE.HIDDEN
             }
-        }
+        } else callback.get()?.hideContent()
     }
 
     private fun onScroll(p: Float): Boolean {
