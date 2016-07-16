@@ -21,6 +21,8 @@ internal class Animator(private val view: PullDownView) : GestureResponses {
     private var userInteracted = false
     private var contentShownOnce = false
 
+    private var contentVisible = false
+
     private var listener: WeakReference<ViewVisibilityChanges>? = null
 
     init {
@@ -38,7 +40,10 @@ internal class Animator(private val view: PullDownView) : GestureResponses {
         duration = view.activity.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         start()
 
-        notifyContentShown()
+        if (!contentVisible)
+            notifyContentShown()
+
+        contentVisible = true
     }
 
     override fun hideContent() = with(ObjectAnimator.ofFloat(view.content, TRANSLATION_Y,
@@ -57,7 +62,10 @@ internal class Animator(private val view: PullDownView) : GestureResponses {
         })
         start()
 
-        notifyContentHidden()
+        if (contentVisible)
+            notifyContentHidden()
+
+        contentVisible = false
     }
 
     override fun onScroll(position: Float) {
