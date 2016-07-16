@@ -134,6 +134,9 @@ class PullDownView(internal val activity: Activity) {
                 header = this@Builder.header!!
                 content = this@Builder.content
 
+                (header.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER_HORIZONTAL
+                (content.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER_HORIZONTAL
+
                 if (this@Builder.contentListener != null)
                     contentListener = WeakReference(this@Builder.contentListener!!)
 
