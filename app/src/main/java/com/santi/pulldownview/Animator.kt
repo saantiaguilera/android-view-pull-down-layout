@@ -60,11 +60,7 @@ internal class Animator(private val view: PullDownView) : GestureResponses, Comm
         when {
             !contentShownOnce && (view.content.y + view.content.height <= view.header.height &&
                                     offset < 0) -> {
-                view.header.y += offset
-                view.content.y += offset
-
-                if (view.header.y <= view.header.height / 2)
-                    hideHeader()
+                hideHeader()
             }
 
             view.content.y + offset <= view.header.height -> view.content.y += offset
