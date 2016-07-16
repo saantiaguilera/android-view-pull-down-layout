@@ -10,6 +10,8 @@ import com.santi.pulldownview.contracts.ViewVisibilityChanges
 import java.lang.ref.WeakReference
 
 /**
+ * Ideally it should receive a contract instead of the pulldownview, but this is just for kotlin
+ * purposes
  *
  * Created by santi on 12/07/16.
  */

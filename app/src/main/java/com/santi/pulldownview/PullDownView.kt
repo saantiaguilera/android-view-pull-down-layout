@@ -21,7 +21,7 @@ class PullDownView(internal val activity: Activity) {
     internal lateinit var content: View
 
     private val animator by lazy {
-        var anim = Animator(this)
+        val anim = Animator(this)
         anim.setCallback(object: ViewVisibilityChanges {
             override fun onViewHidden() {
                 destroy()
@@ -95,9 +95,7 @@ class PullDownView(internal val activity: Activity) {
         viewGroup.removeView(container)
     }
 
-    class Builder(activity: Activity) {
-
-        private val context by lazy { activity }
+    class Builder(internal val activity: Activity) {
 
         //Header is nullable because we want to enforce the user to yes or yes use it. Content is optional
         private var header: View? = null
@@ -106,7 +104,7 @@ class PullDownView(internal val activity: Activity) {
         private var viewListener: ViewCallback? = null
 
         private fun createInvisibleContent(): View {
-            val invisibleContent = View(context)
+            val invisibleContent = View(activity)
             invisibleContent.visibility = View.GONE
             return invisibleContent;
         }
@@ -132,7 +130,7 @@ class PullDownView(internal val activity: Activity) {
         }
 
         fun build(): PullDownView {
-            return PullDownView(context).apply {
+            return PullDownView(activity).apply {
                 header = this@Builder.header!!
                 content = this@Builder.content
 
@@ -148,6 +146,7 @@ class PullDownView(internal val activity: Activity) {
 
     }
 
+    //Since the user can call this notification in the oncreate() or in some point were the activity isnt still drawn, we need to use the hateful OnGlobalLayout
     inline fun <T: View> T.afterMeasured(crossinline stuff: T.() -> Unit) {
         viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
