@@ -1,7 +1,10 @@
 package com.santi.pulldownview
 
 import android.app.Activity
-import android.view.*
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import com.santi.pulldownview.contracts.ContentCallback
 import com.santi.pulldownview.contracts.ViewCallback

@@ -6,7 +6,7 @@ android {
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "com.santi.pulldownview"
+        applicationId "com.u.testenv"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
@@ -27,6 +27,7 @@ dependencies {
     compile fileTree(dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile project(path: ':PullDownView')
 }
 repositories {
     mavenCentral()
