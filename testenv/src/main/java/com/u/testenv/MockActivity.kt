@@ -36,19 +36,13 @@ class MockActivity : Activity() {
         PullDownView.Builder(this)
                 .content(contentView)
                 .header(headerView)
-                .onViewVisibilityChanged(object : ViewCallback {
-                    override fun onViewDismissed() {
-                        Log.w(this@MockActivity.javaClass.name, "onViewDismissed")
-                    }
-                })
-                .onContentVisibilityChanged(object : ContentCallback {
-                    override fun onContentShown() {
-                        Log.w(this@MockActivity.javaClass.name, "onContentShown")
-                    }
-
-                    override fun onContentHidden() {
-                        Log.w(this@MockActivity.javaClass.name, "onContentHidden")
-                    }
+                .onViewVisibilityChanged {
+                    Log.w(this@MockActivity.javaClass.name, "onViewDismissed")
+                }
+                .onContentVisibilityChanged ({
+                    Log.w("", "onContentVisibilityChanged")
+                }, {
+                    Log.w("", "")
                 })
                 .build().showHeader(6000)
     }

@@ -136,6 +136,31 @@ class PullDownView(internal val activity: Activity) {
             return this
         }
 
+        //Once kotlin 1.1 reaches we will have typedefs and this wont be needed :))))
+        fun onViewVisibilityChanged(viewVisibilityChanged: () -> Unit = {}): Builder {
+            onViewVisibilityChanged(object: ViewCallback {
+                override fun onViewDismissed() {
+                    viewVisibilityChanged()
+                }
+            })
+
+            return this
+        }
+
+        fun onContentVisibilityChanged(contentShown: () -> Unit = {}, contentHidden: () -> Unit = {}): Builder {
+            onContentVisibilityChanged(object: ContentCallback {
+                override fun onContentShown() {
+                    contentShown()
+                }
+
+                override fun onContentHidden() {
+                    contentHidden()
+                }
+            })
+
+            return this
+        }
+
         fun build(): PullDownView {
             return PullDownView(activity).apply {
                 header = this@Builder.header!!
