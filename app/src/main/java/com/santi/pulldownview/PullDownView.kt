@@ -97,10 +97,17 @@ class PullDownView(val activity: Activity) {
 
         private val context by lazy { activity }
 
+        //Header is nullable because we want to enforce the user to yes or yes use it. Content is optional
         private var header: View? = null
-        private var content: View? = null
+        private var content: View = createInvisibleContent()
         private var contentListener: ContentCallback? = null
         private var viewListener: ViewCallback? = null
+
+        private fun createInvisibleContent(): View {
+            val invisibleContent = View(context)
+            invisibleContent.visibility = View.GONE
+            return invisibleContent;
+        }
 
         fun header(view: View): Builder {
             header = view
@@ -124,12 +131,8 @@ class PullDownView(val activity: Activity) {
 
         fun build(): PullDownView {
             return PullDownView(context).apply {
-                val invisibleHeader = View(context)
-                val invisibleContent = View(context)
-                invisibleHeader.visibility = View.GONE
-                invisibleContent.visibility = View.GONE
-                header = this@Builder.header?: invisibleHeader
-                content = this@Builder.content?: invisibleContent
+                header = this@Builder.header!!
+                content = this@Builder.content
 
                 if (this@Builder.contentListener != null)
                     contentListener = WeakReference(this@Builder.contentListener!!)
