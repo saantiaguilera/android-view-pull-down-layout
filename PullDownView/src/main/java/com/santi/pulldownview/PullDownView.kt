@@ -67,7 +67,6 @@ class PullDownView(internal val activity: Activity) {
             if (content.height > container.height ||
                     content.layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                 modifyContentHeight()
-                content.invalidate()
             }
 
             content.y = (header.height - content.layoutParams.height).toFloat()
