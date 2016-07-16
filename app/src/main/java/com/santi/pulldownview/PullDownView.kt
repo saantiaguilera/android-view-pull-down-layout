@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference
  *
  * Created by santi on 12/07/16.
  */
-class PullDownView(private val activity: Activity) {
+class PullDownView(internal val activity: Activity) {
 
     private val DEFAULT_TIME_SHOWING = 0L
 
