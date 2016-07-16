@@ -1,7 +1,5 @@
 # Pull Down View. WIP
 
-Not finished yet
-
 Usage. Somewhere around your app. Having a reference of an activity (Else we dont have where to inject this notification)
 
 ```Java
@@ -18,3 +16,5 @@ mPullDownView.hideContent();
 mPullDownView.hideHeader();
 mPullDownView.showHeader(); //Same as the one with the time, when time is 0
 ```
+
+Minimum Api Level : 11
