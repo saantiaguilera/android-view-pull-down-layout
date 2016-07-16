@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference
  *
  * Created by santi on 12/07/16.
  */
-class PullDownView(val activity: Activity) {
+class PullDownView(private val activity: Activity) {
 
     private val DEFAULT_TIME_SHOWING = 0L
 
@@ -78,7 +78,8 @@ class PullDownView(val activity: Activity) {
     }
 
     fun showHeader(time: Long = DEFAULT_TIME_SHOWING) {
-        val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
+        //val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
+        val viewGroup = activity.getWindow().getDecorView().findViewById(android.R.id.content) as ViewGroup
         viewGroup.addView(container)
 
         animator.start(time)
