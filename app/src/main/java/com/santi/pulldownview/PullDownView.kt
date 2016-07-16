@@ -13,8 +13,6 @@ class PullDownView(val activity: Activity) {
 
     private val DEFAULT_TIME_SHOWING = 0L
 
-    val TIME_NO_EXPIRE = -1
-
     internal val container = FrameLayout(activity)
     internal lateinit var header: View
     internal lateinit var content: View
@@ -22,18 +20,24 @@ class PullDownView(val activity: Activity) {
     private val animator by lazy {
         var anim = Animator(this)
         anim.setCallback(object: Animator.Callback {
+            override fun onViewHidden() {
+                destroy()
+                viewListener?.get()?.onViewDismissed()
+            }
+
             override fun onContentHidden() {
-                listener?.get()?.onContentHidden()
+                contentListener?.get()?.onContentHidden()
             }
 
             override fun onContentShown() {
-                listener?.get()?.onContentShown()
+                contentListener?.get()?.onContentShown()
             }
         })
         anim
     }
 
-    private var listener: WeakReference<Callback>? = null
+    private var contentListener: WeakReference<ContentCallback>? = null
+    private var viewListener: WeakReference<ViewCallback>? = null
 
     init {
         container.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
@@ -81,13 +85,19 @@ class PullDownView(val activity: Activity) {
         animator.hideHeader()
     }
 
+    private fun destroy() {
+        val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
+        viewGroup.removeView(container)
+    }
+
     class Builder(activity: Activity) {
 
         private val context by lazy { activity }
 
         private var header: View? = null
         private var content: View? = null
-        private var listener: Callback? = null
+        private var contentListener: ContentCallback? = null
+        private var viewListener: ViewCallback? = null
 
         fun header(view: View): Builder {
             header = view
@@ -99,8 +109,13 @@ class PullDownView(val activity: Activity) {
             return this
         }
 
-        fun listener(callback: Callback): Builder {
-            listener = callback
+        fun onContentVisibilityChanged(contentCallback: ContentCallback): Builder {
+            contentListener = contentCallback
+            return this
+        }
+
+        fun onViewVisibilityChanged(viewCallback: ViewCallback): Builder {
+            viewListener = viewCallback
             return this
         }
 
@@ -113,8 +128,11 @@ class PullDownView(val activity: Activity) {
                 header = this@Builder.header?: invisibleHeader
                 content = this@Builder.content?: invisibleContent
 
-                if (this@Builder.listener != null)
-                    listener = WeakReference(this@Builder.listener!!)
+                if (this@Builder.contentListener != null)
+                    contentListener = WeakReference(this@Builder.contentListener!!)
+
+                if(this@Builder.viewListener != null)
+                    viewListener = WeakReference(this@Builder.viewListener!!)
 
                 build()
             }
@@ -122,9 +140,14 @@ class PullDownView(val activity: Activity) {
 
     }
 
-    interface Callback {
-        fun onContentShown()
-        fun onContentHidden()
+    //With kotlin 1.1 we can do typedefs and change this for OnContentShown = () -> Unit
+    interface ContentCallback {
+        fun onContentShown() {}
+        fun onContentHidden() {}
+    }
+
+    interface ViewCallback {
+        fun onViewDismissed() {}
     }
 
     interface Animations {

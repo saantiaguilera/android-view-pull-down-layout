@@ -83,6 +83,7 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
 
             override fun onAnimationEnd(p0: Animation?) {
                 view.header.visibility = View.INVISIBLE
+                listener?.get()?.onViewHidden()
             }
 
             override fun onAnimationStart(p0: Animation?) {
@@ -118,6 +119,7 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
     interface Callback {
         fun onContentHidden()
         fun onContentShown()
+        fun onViewHidden()
     }
 
 }

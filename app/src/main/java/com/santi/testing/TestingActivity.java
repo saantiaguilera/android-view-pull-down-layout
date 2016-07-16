@@ -43,7 +43,13 @@ public class TestingActivity extends Activity {
         new PullDownView.Builder(this)
                 //.content(contentView)
                 .header(headerView)
-                .listener(new PullDownView.Callback() {
+                .onViewVisibilityChanged(new PullDownView.ViewCallback() {
+                    @Override
+                    public void onViewDismissed() {
+                        Log.w(this.getClass().getName(), "onViewDismissed");
+                    }
+                })
+                .onContentVisibilityChanged(new PullDownView.ContentCallback() {
                     @Override
                     public void onContentShown() {
                         Log.w(this.getClass().getName(), "onContentShown");

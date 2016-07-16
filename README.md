@@ -8,7 +8,8 @@ Usage. Somewhere around your app. Having a reference of an activity (I will chan
 new PullDownView.Builder(activityReference)
 		.header(aViewThatWillBeShownAsHeader)
 		.content(aViewThatWillBeShownAsContent)
-		.listener(toReceiveCallbacksFromImportantEvents)
+		.onViewVisibilityChanged(toReceiveCallbacksFromImportantEvents)
+		.onContentVisibilityChanged(toReceiveCallbacksFromImportantEvents)
 		.build().showHeader(theTimeThatWillBeShown);
 
 //If you hold the instance you can also do manually
