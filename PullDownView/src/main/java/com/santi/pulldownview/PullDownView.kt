@@ -56,18 +56,21 @@ class PullDownView(internal val activity: Activity) {
         fun modifyContentHeight() {
             //Also decrease with the bottom margin only in this case because its when the margin
             //Will be visible (in the other cases it wont be because its not fullscreen the content
-            content.layoutParams.height = this@PullDownView.container.height -
-                    header.layoutParams.height -
+            val params = content.layoutParams
+            params.height = container.height -
+                    header.height -
                     (content.layoutParams as FrameLayout.LayoutParams).bottomMargin
+            content.layoutParams = params
         }
 
         fun modifyContents() {
-            if (content.layoutParams.height > this@PullDownView.container.height ||
+            if (content.height > container.height ||
                     content.layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
                 modifyContentHeight()
+                content.invalidate()
             }
 
-            content.y = (header.layoutParams.height - content.layoutParams.height).toFloat()
+            content.y = (header.height - content.layoutParams.height).toFloat()
         }
 
         if (content.layoutParams.height <= 0 || content.layoutParams.width <= 0) {
@@ -100,6 +103,7 @@ class PullDownView(internal val activity: Activity) {
     private fun destroy() {
         val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
         viewGroup.removeView(container)
+        container.removeAllViews()
     }
 
     class Builder(internal val activity: Activity) {
