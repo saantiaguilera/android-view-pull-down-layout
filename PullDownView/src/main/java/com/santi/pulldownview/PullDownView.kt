@@ -113,7 +113,7 @@ class PullDownView(internal val activity: Activity) {
         private fun createInvisibleContent(): View {
             val invisibleContent = View(activity)
             invisibleContent.visibility = View.GONE
-            return invisibleContent;
+            return invisibleContent
         }
 
         fun header(view: View): Builder {

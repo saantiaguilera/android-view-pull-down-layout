@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import com.santi.pulldownview.contracts.CommandAnimations
 import com.santi.pulldownview.contracts.GestureResponses
 import com.santi.pulldownview.contracts.ViewVisibilityChanges
 import java.lang.ref.WeakReference
@@ -15,7 +14,9 @@ import java.lang.ref.WeakReference
  *
  * Created by santi on 12/07/16.
  */
-internal class Animator(private val view: PullDownView) : GestureResponses, CommandAnimations {
+internal class Animator(private val view: PullDownView) : GestureResponses {
+
+    private val TRANSLATION_Y = "translationY"
 
     private var userInteracted = false
     private var contentShownOnce = false
@@ -30,7 +31,8 @@ internal class Animator(private val view: PullDownView) : GestureResponses, Comm
         listener = WeakReference(callback)
     }
 
-    override fun showContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, view.header.height.toFloat())) {
+    override fun showContent() = with(ObjectAnimator.ofFloat(view.content, TRANSLATION_Y,
+            view.content.y, view.header.height.toFloat())) {
         userInteracted = true
         contentShownOnce = true
         duration = view.activity.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
@@ -39,7 +41,9 @@ internal class Animator(private val view: PullDownView) : GestureResponses, Comm
         notifyContentShown()
     }
 
-    override fun hideContent() = with(ObjectAnimator.ofFloat(view.content, View.TRANSLATION_Y, (view.header.height.abs() - view.content.height.abs()).toFloat())) {
+    override fun hideContent() = with(ObjectAnimator.ofFloat(view.content, TRANSLATION_Y,
+            view.content.y,
+            (view.header.height.abs() - view.content.height.abs()).toFloat())) {
         userInteracted = true
         duration = view.activity.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         addListener(object: android.animation.Animator.AnimatorListener {
@@ -96,7 +100,7 @@ internal class Animator(private val view: PullDownView) : GestureResponses, Comm
         view.container.startAnimation(animation)
     }
 
-    override fun start(time: Long) {
+    fun start(time: Long) {
         showHeader()
 
         if (time > 0) {
