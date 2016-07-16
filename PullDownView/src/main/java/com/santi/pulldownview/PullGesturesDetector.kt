@@ -1,5 +1,6 @@
 package com.santi.pulldownview
 
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import com.santi.pulldownview.contracts.GestureResponses
@@ -24,9 +25,9 @@ internal class PullGesturesDetector(private val view: PullDownView) {
         callback = WeakReference(listener)
 
         if (view.content.visibility == View.VISIBLE)
-            view.content.setOnTouchListener(touchInstance)
+            view.content.setOnTouchListener(PullGesturesTouchListener())
 
-        view.header.setOnTouchListener(touchInstance)
+        view.header.setOnTouchListener(PullGesturesTouchListener())
     }
 
     private fun end() {
@@ -61,13 +62,23 @@ internal class PullGesturesDetector(private val view: PullDownView) {
 
     }
 
-    val touchInstance = object: View.OnTouchListener {
+    private inner class PullGesturesTouchListener : View.OnTouchListener {
+
+        val gestureDetector by lazy {
+            GestureDetector(view.activity, GestureListener())
+        }
+
         var moved = false
         var y = 0
 
         override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
             if (motionEvent == null)
                 return false
+
+            val gestureResult = gestureDetector.onTouchEvent(motionEvent)
+
+            if (motionEvent.action != MotionEvent.ACTION_DOWN && gestureResult)
+                return true
 
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -95,7 +106,35 @@ internal class PullGesturesDetector(private val view: PullDownView) {
 
                 else -> return false
             }
+            
         }
+
+    }
+
+    private inner class GestureListener: GestureDetector.SimpleOnGestureListener() {
+
+        val SWIPE_THRESHOLD = 100
+        val SWIPE_VELOCITY_THRESHOLD = 100
+
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+            val diffY = e2!!.y - e1!!.y
+
+            if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                if (diffY > 0)
+                    callback.get()?.showContent()
+                else callback.get()?.hideContent()
+
+                return true
+            }
+
+            return false
+        }
+
+        //Because of issue were it doesnt start tracking until onDown is recvd
+        override fun onDown(e: MotionEvent?): Boolean {
+            return true
+        }
+
     }
 
 }
