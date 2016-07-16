@@ -3,6 +3,9 @@ package com.santi.pulldownview
 import android.app.Activity
 import android.view.*
 import android.widget.FrameLayout
+import com.santi.pulldownview.contracts.ContentCallback
+import com.santi.pulldownview.contracts.ViewCallback
+import com.santi.pulldownview.contracts.ViewVisibilityChanges
 import java.lang.ref.WeakReference
 
 /**
@@ -19,7 +22,7 @@ class PullDownView(val activity: Activity) {
 
     private val animator by lazy {
         var anim = Animator(this)
-        anim.setCallback(object: Animator.Callback {
+        anim.setCallback(object: ViewVisibilityChanges {
             override fun onViewHidden() {
                 destroy()
                 viewListener?.get()?.onViewDismissed()
@@ -138,20 +141,6 @@ class PullDownView(val activity: Activity) {
             }
         }
 
-    }
-
-    //With kotlin 1.1 we can do typedefs and change this for OnContentShown = () -> Unit
-    interface ContentCallback {
-        fun onContentShown() {}
-        fun onContentHidden() {}
-    }
-
-    interface ViewCallback {
-        fun onViewDismissed() {}
-    }
-
-    interface Animations {
-        fun start(time: Long)
     }
 
     inline fun <T: View> T.afterMeasured(crossinline stuff: T.() -> Unit) {

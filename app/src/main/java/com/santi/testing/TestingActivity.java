@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.santi.pulldownview.PullDownView;
 import com.santi.pulldownview.R;
+import com.santi.pulldownview.contracts.ContentCallback;
+import com.santi.pulldownview.contracts.ViewCallback;
 
 public class TestingActivity extends Activity {
 
@@ -43,13 +45,13 @@ public class TestingActivity extends Activity {
         new PullDownView.Builder(this)
                 //.content(contentView)
                 .header(headerView)
-                .onViewVisibilityChanged(new PullDownView.ViewCallback() {
+                .onViewVisibilityChanged(new ViewCallback() {
                     @Override
                     public void onViewDismissed() {
                         Log.w(this.getClass().getName(), "onViewDismissed");
                     }
                 })
-                .onContentVisibilityChanged(new PullDownView.ContentCallback() {
+                .onContentVisibilityChanged(new ContentCallback() {
                     @Override
                     public void onContentShown() {
                         Log.w(this.getClass().getName(), "onContentShown");

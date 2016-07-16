@@ -2,6 +2,7 @@ package com.santi.pulldownview
 
 import android.view.MotionEvent
 import android.view.View
+import com.santi.pulldownview.contracts.GestureResponses
 import java.lang.ref.WeakReference
 
 /**
@@ -17,9 +18,9 @@ internal class PullGesturesDetector(private val view: PullDownView) {
 
     private lateinit var state: STATE
 
-    private lateinit var callback: WeakReference<Callback?>
+    private lateinit var callback: WeakReference<GestureResponses?>
 
-    fun setCallback(listener: Callback) {
+    fun setCallback(listener: GestureResponses) {
         callback = WeakReference(listener)
 
         if (view.content.visibility == View.VISIBLE)
@@ -95,12 +96,6 @@ internal class PullGesturesDetector(private val view: PullDownView) {
                 else -> return false
             }
         }
-    }
-
-    interface Callback {
-        fun onScroll(position: Float)
-        fun showContent()
-        fun hideContent()
     }
 
 }

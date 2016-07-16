@@ -4,24 +4,27 @@ import android.animation.ObjectAnimator
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import com.santi.pulldownview.contracts.CommandAnimations
+import com.santi.pulldownview.contracts.GestureResponses
+import com.santi.pulldownview.contracts.ViewVisibilityChanges
 import java.lang.ref.WeakReference
 
 /**
  *
  * Created by santi on 12/07/16.
  */
-internal class Animator(private val view: PullDownView) : PullGesturesDetector.Callback, PullDownView.Animations {
+internal class Animator(private val view: PullDownView) : GestureResponses, CommandAnimations {
 
     private var userInteracted = false
     private var contentShownOnce = false
 
-    private var listener: WeakReference<Callback>? = null
+    private var listener: WeakReference<ViewVisibilityChanges>? = null
 
     init {
         PullGesturesDetector(view).setCallback(this)
     }
 
-    fun setCallback(callback: Callback) {
+    fun setCallback(callback: ViewVisibilityChanges) {
         listener = WeakReference(callback)
     }
 
@@ -115,11 +118,5 @@ internal class Animator(private val view: PullDownView) : PullGesturesDetector.C
     }
 
     fun Int.abs(): Int = if (this < 0) -this else this
-
-    interface Callback {
-        fun onContentHidden()
-        fun onContentShown()
-        fun onViewHidden()
-    }
 
 }
