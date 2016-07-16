@@ -1,4 +1,4 @@
-# Pull Down View. WIP
+# Pull Down View
 
 Usage. Somewhere around your app. Having a reference of an activity (Else we dont have where to inject this notification)
 
@@ -17,4 +17,4 @@ mPullDownView.hideHeader();
 mPullDownView.showHeader(); //Same as the one with the time, when time is 0
 ```
 
-Minimum Api Level : 11
+Minimum Api Level: 11
