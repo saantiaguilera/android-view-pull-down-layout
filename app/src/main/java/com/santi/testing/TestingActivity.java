@@ -25,7 +25,7 @@ public class TestingActivity extends Activity {
 
         View headerView = new View(this);
         headerView.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-        headerView.setLayoutParams(new FrameLayout.LayoutParams(300, 150));
+        headerView.setLayoutParams(new FrameLayout.LayoutParams(640, 150));
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,7 +36,11 @@ public class TestingActivity extends Activity {
 
         View contentView = new View(this);
         contentView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        contentView.setLayoutParams(new FrameLayout.LayoutParams(300, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(630, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.bottomMargin = 80;
+        contentView.setLayoutParams(params);
+
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

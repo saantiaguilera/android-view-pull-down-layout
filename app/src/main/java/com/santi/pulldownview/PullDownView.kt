@@ -51,7 +51,11 @@ class PullDownView(internal val activity: Activity) {
         container.addView(header)
 
         fun modifyContentHeight() {
-            content.layoutParams.height = this@PullDownView.container.height - header.layoutParams.height
+            //Also decrease with the bottom margin only in this case because its when the margin
+            //Will be visible (in the other cases it wont be because its not fullscreen the content
+            content.layoutParams.height = this@PullDownView.container.height -
+                    header.layoutParams.height -
+                    (content.layoutParams as FrameLayout.LayoutParams).bottomMargin
         }
 
         fun modifyContents() {
