@@ -92,7 +92,7 @@ class PullDownView(activity: Activity) {
 
     fun showHeader(time: Long = DEFAULT_TIME_SHOWING) {
         //val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
-        val viewGroup = activity.get().getWindow().getDecorView().findViewById(android.R.id.content) as ViewGroup
+        val viewGroup = activity.get().findViewById(android.R.id.content) as ViewGroup
         viewGroup.addView(container)
 
         animator.start(time)
@@ -197,7 +197,7 @@ class PullDownView(activity: Activity) {
                     if (Build.VERSION.SDK_INT < 16)
                         viewTreeObserver.removeGlobalOnLayoutListener(this)
                     else viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    
+
                     stuff()
                 }
             }
