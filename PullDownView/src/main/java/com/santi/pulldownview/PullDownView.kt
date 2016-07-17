@@ -1,6 +1,7 @@
 package com.santi.pulldownview
 
 import android.app.Activity
+import android.os.Build
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -193,7 +194,10 @@ class PullDownView(activity: Activity) {
         viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 if (measuredWidth > 0 && measuredHeight > 0) {
-                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    if (Build.VERSION.SDK_INT < 16)
+                        viewTreeObserver.removeGlobalOnLayoutListener(this)
+                    else viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    
                     stuff()
                 }
             }
