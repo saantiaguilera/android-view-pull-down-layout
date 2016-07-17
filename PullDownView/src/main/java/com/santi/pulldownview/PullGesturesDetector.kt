@@ -65,7 +65,7 @@ internal class PullGesturesDetector(private val view: PullDownView) {
     private inner class PullGesturesTouchListener : View.OnTouchListener {
 
         val gestureDetector by lazy {
-            GestureDetector(view.activity, GestureListener())
+            GestureDetector(view.activity.get(), GestureListener())
         }
 
         var moved = false

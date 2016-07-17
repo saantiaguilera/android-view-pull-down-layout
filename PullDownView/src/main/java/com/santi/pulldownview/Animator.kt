@@ -37,7 +37,7 @@ internal class Animator(private val view: PullDownView) : GestureResponses {
             view.content.y, view.header.height.toFloat())) {
         userInteracted = true
         contentShownOnce = true
-        duration = view.activity.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        duration = view.activity.get().resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         start()
 
         if (!contentVisible)
@@ -50,7 +50,7 @@ internal class Animator(private val view: PullDownView) : GestureResponses {
             view.content.y,
             (view.header.height.abs() - view.content.height.abs()).toFloat())) {
         userInteracted = true
-        duration = view.activity.resources.getInteger(android.R.integer.config_longAnimTime).toLong()
+        duration = view.activity.get().resources.getInteger(android.R.integer.config_longAnimTime).toLong()
         addListener(object: android.animation.Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: android.animation.Animator?) { }
             override fun onAnimationCancel(p0: android.animation.Animator?) { }
@@ -85,11 +85,11 @@ internal class Animator(private val view: PullDownView) : GestureResponses {
 
     private fun showHeader() {
         view.header.visibility = View.VISIBLE
-        view.container.startAnimation(AnimationUtils.loadAnimation(view.activity, R.anim.slide_in_bottom))
+        view.container.startAnimation(AnimationUtils.loadAnimation(view.activity.get(), R.anim.slide_in_bottom))
     }
 
     fun hideHeader() {
-        val animation = AnimationUtils.loadAnimation(view.activity, R.anim.slide_out_top)
+        val animation = AnimationUtils.loadAnimation(view.activity.get(), R.anim.slide_out_top)
         animation.setAnimationListener(object: Animation.AnimationListener {
             override fun onAnimationRepeat(p0: Animation?) {
             }

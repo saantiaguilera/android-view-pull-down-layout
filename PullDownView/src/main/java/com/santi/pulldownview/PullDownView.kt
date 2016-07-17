@@ -15,9 +15,11 @@ import java.lang.ref.WeakReference
  *
  * Created by santi on 12/07/16.
  */
-class PullDownView(internal val activity: Activity) {
+class PullDownView(activity: Activity) {
 
     private val DEFAULT_TIME_SHOWING = 0L
+
+    internal val activity = WeakReference<Activity>(activity)
 
     internal val container = FrameLayout(activity)
     internal lateinit var header: View
@@ -89,7 +91,7 @@ class PullDownView(internal val activity: Activity) {
 
     fun showHeader(time: Long = DEFAULT_TIME_SHOWING) {
         //val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
-        val viewGroup = activity.getWindow().getDecorView().findViewById(android.R.id.content) as ViewGroup
+        val viewGroup = activity.get().getWindow().getDecorView().findViewById(android.R.id.content) as ViewGroup
         viewGroup.addView(container)
 
         animator.start(time)
@@ -100,12 +102,14 @@ class PullDownView(internal val activity: Activity) {
     }
 
     private fun destroy() {
-        val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
+        val viewGroup = activity.get().findViewById(android.R.id.content) as ViewGroup
         viewGroup.removeView(container)
         container.removeAllViews()
     }
 
-    class Builder(internal val activity: Activity) {
+    class Builder(activity: Activity) {
+
+        private val activity = WeakReference<Activity>(activity)
 
         //Header is nullable because we want to enforce the user to yes or yes use it. Content is optional
         private var header: View? = null
@@ -114,7 +118,7 @@ class PullDownView(internal val activity: Activity) {
         private var viewListener: ViewCallback? = null
 
         private fun createInvisibleContent(): View {
-            val invisibleContent = View(activity)
+            val invisibleContent = View(activity.get())
             invisibleContent.visibility = View.GONE
             return invisibleContent
         }
@@ -165,7 +169,7 @@ class PullDownView(internal val activity: Activity) {
         }
 
         fun build(): PullDownView {
-            return PullDownView(activity).apply {
+            return PullDownView(activity.get()).apply {
                 header = this@Builder.header!!
                 content = this@Builder.content
 
