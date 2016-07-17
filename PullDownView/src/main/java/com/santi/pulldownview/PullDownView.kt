@@ -18,13 +18,19 @@ import java.lang.ref.WeakReference
  */
 class PullDownView(activity: Activity) {
 
+    private val VIEW_TAG = PullDownView::class.java.name
     private val DEFAULT_TIME_SHOWING = 0L
 
     internal val activity = WeakReference<Activity>(activity)
 
-    internal val container = FrameLayout(activity)
+    internal val container = FrameLayout(activity).apply {
+        tag = VIEW_TAG
+    }
+
     internal lateinit var header: View
     internal lateinit var content: View
+
+    internal var showing = false
 
     private val animator by lazy {
         val anim = Animator(this)
@@ -83,29 +89,46 @@ class PullDownView(activity: Activity) {
     }
 
     fun showContent() {
-        animator.showContent()
+        if (showing)
+            animator.showContent()
     }
 
     fun hideContent() {
-        animator.hideContent()
+        if (showing)
+            animator.hideContent()
     }
 
     fun showHeader(time: Long = DEFAULT_TIME_SHOWING) {
+        if (showing)
+            return
+
         //val viewGroup = activity.findViewById(android.R.id.content) as ViewGroup
         val viewGroup = activity.get().findViewById(android.R.id.content) as ViewGroup
+
+        for (i in 0..viewGroup.childCount - 1) {
+            val child = viewGroup.getChildAt(i)
+            if (child.tag != null && child.tag == VIEW_TAG)
+                viewGroup.removeView(child)
+        }
+
         viewGroup.addView(container)
 
         animator.start(time)
+
+        showing = true
     }
 
     fun hideHeader() {
-        animator.hideHeader()
+        if (showing)
+            animator.hideHeader()
     }
 
     private fun destroy() {
         val viewGroup = activity.get().findViewById(android.R.id.content) as ViewGroup
         viewGroup.removeView(container)
         container.removeAllViews()
+
+        showing = false
     }
 
     class Builder(activity: Activity) {
